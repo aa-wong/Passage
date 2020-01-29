@@ -11,5 +11,5 @@ Arduino sketch written in C++ for the passage art lights installation for the On
 
 The Arduino controls 2 LED strips and an Ultrasonic sensor. The LED strips transmit light through fibre optic cables that are woven into the installation, creating a mosaic of lights that blends cool and warm tones. The ultrasonic sensor is used to detect when an audience member passes through the installation and a display of pulsing lights are fired through the fibre optics to dazzle the audience.
 
-# Implementation
+# Dependencies
 Adafruit_NeoPixel library
