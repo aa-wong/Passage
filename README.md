@@ -1,3 +1,5 @@
+![Passage](https://raw.githubusercontent.com/aa-wong/passage/master/passage-concept-image.jpg)
+
 # Passage
 Art installation piece for the Ontario Place Winter Lights festival 2020.
 
