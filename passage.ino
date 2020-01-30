@@ -1,7 +1,7 @@
 #include <Adafruit_NeoPixel.h>
 
 #define PIN_1 9                    // our control pin
-#define PIN_2 13
+#define PIN_2 10
 #define MAX_BRIGHTNESS (255)
 
 #define NUM_LEDS 7
@@ -15,8 +15,10 @@ bool flip = false;
 int g = 255;
 int b = 0;
 
+int timeout = false;
+int timing = 200;
+
 // Ultrasound Params
-int trigPin = 11;    // Trigger
 int echoPin = 12;    // Echo
 
 void showStrip() {
@@ -57,7 +59,6 @@ void setup() {
   //Serial Port begin
   Serial.begin (9600);
   //Define inputs and outputs
-  pinMode(trigPin, OUTPUT);
   pinMode(echoPin, INPUT);
   strip1.begin();
   strip2.begin();
@@ -72,12 +73,36 @@ void loop() {
   long inches = (duration/2) / 74;   // Divide by 74 or multiply by 0.0135
   
   reset();
-
-  if (cm < 120 || cm > 1000) {
-    return showFlames(55,120,15);
+  
+  if (timing == 0) {
+    timing = 300;
+    timeout = false;
   }
+  if (timeout || cm < 120 || cm > 1000) {
+    timeout = true;
+    return colorGradient();
+//    return showFlames(55,120,15);
+  }
+  
+  return red();
+}
 
-  return colorGradient();
+void red() {
+  for (int i = 0; i < NUM_LEDS; ++i) {
+    strip1.setPixelColor(i, strip1.Color(255, 0, 0));
+    strip1.show();
+    strip2.setPixelColor(i, strip2.Color(255, 0, 0));
+    strip2.show();
+  }
+}
+
+void red() {
+  for (int i = 0; i < NUM_LEDS; ++i) {
+    strip1.setPixelColor(i, strip1.Color(255, 155, 0));
+    strip1.show();
+    strip2.setPixelColor(i, strip2.Color(255, 155, 0));
+    strip2.show();
+  }
 }
 
 void reset() {
@@ -85,23 +110,16 @@ void reset() {
   strip2.clear();
 }
 
-void sendPulse() {
-  // The sensor is triggered by a HIGH pulse of 10 or more microseconds.
-  // Give a short LOW pulse beforehand to ensure a clean HIGH pulse:
-  digitalWrite(trigPin, LOW);
-  delayMicroseconds(5);
-  digitalWrite(trigPin, HIGH);
-  delayMicroseconds(10);
-  digitalWrite(trigPin, LOW);
- 
+long sendPulse() {
   // Read the signal from the sensor: a HIGH pulse whose
   // duration is the time (in microseconds) from the sending
   // of the ping to the reception of its echo off of an object.
-  pinMode(echoPin, INPUT);
   return pulseIn(echoPin, HIGH);
 }
 
 void colorGradient() {
+  --timing;
+  Serial.println(timing);
   if (g == 255 || g == 0) {
     flip = !flip;
   }
