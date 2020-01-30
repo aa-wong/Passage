@@ -98,7 +98,6 @@ void yellow() {
     strip2.setPixelColor(i, strip2.Color(255, 155, 0));
     strip2.show();
   }
-  
 }
 
 void reset() {
