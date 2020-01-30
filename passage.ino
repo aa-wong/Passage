@@ -73,18 +73,12 @@ void loop() {
   long inches = (duration/2) / 74;   // Divide by 74 or multiply by 0.0135
   
   reset();
-  
-  if (timing == 0) {
-    timing = 300;
-    timeout = false;
-  }
-  if (timeout || cm < 120 || cm > 1000) {
-    timeout = true;
-    return colorGradient();
-//    return showFlames(55,120,15);
+
+  if (cm < 120 || cm > 1000) {
+    return red();
   }
   
-  return red();
+  return yellow();
 }
 
 void red() {
@@ -94,15 +88,17 @@ void red() {
     strip2.setPixelColor(i, strip2.Color(255, 0, 0));
     strip2.show();
   }
+  delay(3000);
 }
 
-void red() {
+void yellow() {
   for (int i = 0; i < NUM_LEDS; ++i) {
     strip1.setPixelColor(i, strip1.Color(255, 155, 0));
     strip1.show();
     strip2.setPixelColor(i, strip2.Color(255, 155, 0));
     strip2.show();
   }
+  
 }
 
 void reset() {
